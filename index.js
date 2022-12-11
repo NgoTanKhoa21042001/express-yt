@@ -2,18 +2,15 @@
 // body-parser để parse thành dạng json
 
 const express = require("express");
-
-const app = express();
-
-const morgan = require("morgan");
-
 const cors = require("cors");
-
-const bodyParser = require("body-parser");
-
+const app = express();
 const mongoose = require("mongoose");
-
+var bodyParser = require("body-parser");
+const morgan = require("morgan");
+const helmet = require("helmet");
 const dotenv = require("dotenv");
+const authorRoute = require("./routes/author");
+const bookRoute = require("./routes/book");
 
 dotenv.config();
 
@@ -25,17 +22,15 @@ mongoose.connect(
   }
 );
 
-app.get("/", (req, res) => {
-  res.status(200).json("123");
-});
-
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(helmet());
 app.use(cors());
-// morgan đơn giản là khi bạn send req nào đó thì nó sẽ báo gi đó ở terminal
 app.use(morgan("common"));
 
-// gửi api req dưới dạng json và parse nó
-app.use(bodyParser.json({ limit: "50mb" }));
+//ROUTES
+app.use("/v1/author", authorRoute);
+app.use("/v1/book", bookRoute);
 
-app.listen(8500, () => {
-  console.log("Server is runnning...");
+app.listen(process.env.PORT || 8000, () => {
+  console.log("Server is running...");
 });
