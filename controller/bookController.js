@@ -1,3 +1,5 @@
+// controller là để tạo ra những function thực hiện việc gi
+
 const { Book, Author } = require("../model/model");
 
 const bookController = {
@@ -43,6 +45,23 @@ const bookController = {
       // update những gi đc gửi lên
       await book.updateOne({ $set: req.body });
       res.status(200).json("Updated Successfully");
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  // Delete a book
+
+  deleteBook: async (req, res) => {
+    try {
+      // lấy sách ra từ author
+      // cần phải xóa book trong author
+      await Author.updateMany(
+        { books: req.params.id },
+        { $pull: { books: req.params.id } }
+      );
+      await Book.findByIdAndDelete(req.params.id);
+      res.status(200).json("Delete Successfully");
     } catch (error) {
       res.status(500).json(error);
     }

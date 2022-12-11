@@ -12,4 +12,7 @@ router.get("/", authorController.getAllAuthors);
 // GET AN AUTHOR
 router.get("/:id", authorController.getAnAuthor);
 
+// UPDATE AUTHOR
+router.put("/:id", authorController.updateAuthor);
+
 module.exports = router;
