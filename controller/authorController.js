@@ -46,6 +46,17 @@ const authorController = {
       res.status(500).json(error);
     }
   },
+
+  deleteAuthor: async (req, res) => {
+    try {
+      // lấy id author ra từ trong Book, tieeps đến set author là null
+      await Book.updateMany({ author: req.params.id }, { author: null });
+      await Author.findByIdAndDelete(req.params.id);
+      res.status(200).json("Delete Successfully");
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
 };
 
 module.exports = authorController;

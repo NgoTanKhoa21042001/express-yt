@@ -56,6 +56,7 @@ const bookController = {
     try {
       // lấy sách ra từ author
       // cần phải xóa book trong author
+      // bởi vì book là array nên sài đc pull
       await Author.updateMany(
         { books: req.params.id },
         { $pull: { books: req.params.id } }
